@@ -15,6 +15,8 @@ var Scripter = function(processor) {
     this.scarlet = new Scarlet(10);
     this.processor = processor;
     this.sql = [];
+
+    this.errors = [];
 };
 
 /**
@@ -30,25 +32,30 @@ Scripter.prototype.push = function(sql) {
  * @param callback
  */
 Scripter.prototype.exec = function(callback) {
-    var self = this;
-
     for(var i = 0; i < this.sql.length; i++) {
-        this.scarlet.push(this.sql[i], function(TO) {
-            var sql = TO.task;
-            self.processor(sql, function(err) {
-                if(err) {
-                    console.log("Error occurred while executing [" + sql + "]: " + err.message);
-                } else {
-                    console.log("Done: [" + sql + "]");
-                }
-
-                self.scarlet.taskDone(TO);
-                if(self.scarlet.numberOfProcessed() === self.sql.length) {
-                    callback();
-                }
-            });
-        });
+        this.scarlet.push(this.sql[i], this._tasker.bind(this));
     }
+
+    var self = this;
+    this.scarlet.afterFinish(this.sql.length, function() {
+        if(self.errors.length) {
+            return callback(self.errors);
+        }
+
+        callback();
+    }, false);
+};
+
+Scripter.prototype._tasker = function(TO) {
+    var sql = TO.task;
+    var self = this;
+    this.processor(sql, function(err) {
+        if(err) {
+            self.errors.push(new Error("Error occurred while executing [" + sql + "]: " + err.message));
+        }
+
+        self.scarlet.taskDone(TO);
+    });
 };
 
 module.exports = Scripter;
