@@ -1,10 +1,10 @@
 {
   "name": "hb-database-scripter",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "The database upgrade script executer.",
   "main": "index.js",
   "dependencies": {
-    "scarlet-task": "~0.0.7"
+    "scarlet-task": "^0.1.0-comment"
   },
   "devDependencies": {},
   "scripts": {
@@ -23,7 +23,6 @@
   "author": "XadillaX",
   "license": "GPLv2",
   "readmeFilename": "README.md",
-  "gitHead": "84c3bcc09d7af8a8bd51e805e936bb29fe29d38c",
   "bugs": {
     "url": "https://github.com/XadillaX/hb-database-scripter/issues"
   }
