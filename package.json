@@ -4,7 +4,7 @@
   "description": "The database upgrade script executer.",
   "main": "index.js",
   "dependencies": {
-    "scarlet-task": "^0.1.0-comment"
+    "scarlet-task": "^2.0.0"
   },
   "devDependencies": {},
   "scripts": {
